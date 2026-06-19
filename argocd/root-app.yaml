@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:paosfocalt/thatch.git
+    repoURL: https://github.com/paosfocalt/thatch.git
     targetRevision: main
     path: argocd/apps
     directory:

@@ -1,1 +1,5 @@
-{}
+kyverno:
+  admissionController:
+    replicas: 1
+  backgroundController:
+    replicas: 1
