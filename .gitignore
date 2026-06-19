@@ -1,0 +1,27 @@
+# Ansible
+*.retry
+.vault_password
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+k3s.yaml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+*.swp
+
+# Secrets
+secrets/
+*.key
+*.pem
+
+# IDE
+.vscode/
+.idea/

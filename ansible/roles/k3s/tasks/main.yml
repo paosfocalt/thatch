@@ -1,0 +1,47 @@
+---
+- name: Create k3s config directory
+  ansible.builtin.file:
+    path: "{{ k3s_config_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Write k3s configuration
+  ansible.builtin.template:
+    src: k3s-config.yaml.j2
+    dest: "{{ k3s_config_dir }}/config.yaml"
+    mode: "0644"
+
+- name: Check if k3s is already installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/k3s
+  register: k3s_binary
+
+- name: Download k3s install script
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s-install.sh
+    mode: "0755"
+  when: not k3s_binary.stat.exists
+
+- name: Install k3s
+  ansible.builtin.command: /tmp/k3s-install.sh
+  environment:
+    INSTALL_K3S_CHANNEL: "{{ k3s_version_channel }}"
+  when: not k3s_binary.stat.exists
+  changed_when: true
+
+- name: Enable and start k3s service
+  ansible.builtin.systemd:
+    name: k3s
+    enabled: true
+    state: started
+
+- name: Wait for k3s to be ready
+  ansible.builtin.command: kubectl get nodes
+  environment:
+    KUBECONFIG: "{{ k3s_kubeconfig_path }}"
+  register: kubectl_nodes
+  until: "'Ready' in kubectl_nodes.stdout"
+  retries: 30
+  delay: 10
+  changed_when: false

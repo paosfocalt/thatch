@@ -1,0 +1,7 @@
+---
+k3s_version_channel: "stable"
+k3s_disable:
+  - traefik
+  - servicelb
+k3s_kubeconfig_path: /etc/rancher/k3s/k3s.yaml
+k3s_config_dir: /etc/rancher/k3s
