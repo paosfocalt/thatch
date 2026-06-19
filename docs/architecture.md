@@ -1,6 +1,6 @@
 # Thatch - An Architectural Overview
 
-### Containerization
+### Platform Setup
 
 Ansible installs and deploys Thatch's dependencies - that being the k3s cluster and the ArgoCD resources, so you can write and deploy your applications without worrying about a missing config.
 
@@ -10,9 +10,9 @@ Thatch uses GitHub Actions for CI and ArgoCD to deploy its applications onto the
 
 ### Security Tooling
 
-Thatch prescribes to a security-first mindset, making sure vulnerable apps are detected and patched posthaste. 
+Thatch subscribes to a security-first mindset, making sure vulnerable apps are detected and patched posthaste. 
 
-**Kyverno** is used as a Policy-As-Code engine, acting as a valuable guardrail between a misconfigured application that was allowed to run as Root, and an attacker looking to explot exactly that. 
+**Kyverno** is used as a Policy-As-Code engine, acting as a valuable guardrail between a misconfigured application that was allowed to run as Root, and an attacker looking to exploit exactly that. 
 
 **Falco** WIP
 **Trivy** WIP
