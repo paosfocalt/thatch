@@ -1,20 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root
+  name: kyverno
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: git@github.com:paosfocalt/thatch.git
     targetRevision: main
-    path: argocd/apps
-    directory:
-      recurse: false
+    path: helm/kyverno
+    helm:
+      releaseName: kyverno
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: kyverno
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  automated:
+    prune: true
+    selfHeal: true
+  syncOptions:
+    - CreateNamespace=true
+
+
