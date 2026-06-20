@@ -1,31 +1,45 @@
 ---
-- name: Create ArgoCD namespace
-  ansible.builtin.command: kubectl create namespace {{ argocd_namespace }}
+- name: Install Helm (if not present)
+  ansible.builtin.shell: |
+    if ! command -v helm &> /dev/null; then
+      curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    fi
   environment:
     KUBECONFIG: "{{ k3s_kubeconfig_path }}"
-  register: ns_result
-  failed_when: ns_result.rc != 0 and 'already exists' not in ns_result.stderr
-  changed_when: ns_result.rc == 0
+  changed_when: false
 
-- name: Apply ArgoCD manifests
+- name: Add ArgoCD Helm repo
+  ansible.builtin.command: helm repo add argo https://argoproj.github.io/argo-helm
+  environment:
+    KUBECONFIG: "{{ k3s_kubeconfig_path }}"
+  register: repo_result
+  failed_when: repo_result.rc != 0 and 'already exists' not in repo_result.stderr
+  changed_when: "'has been added' in repo_result.stdout"
+
+- name: Update Helm repos
+  ansible.builtin.command: helm repo update
+  environment:
+    KUBECONFIG: "{{ k3s_kubeconfig_path }}"
+  changed_when: false
+
+- name: Install ArgoCD via Helm
   ansible.builtin.command: >
-    kubectl apply -n {{ argocd_namespace }} -f {{ argocd_manifests_url }}
+    helm upgrade --install argocd argo/argo-cd
+    --namespace {{ argocd_namespace }}
+    --create-namespace
+    --version {{ argocd_chart_version }}
+    --set server.service.type=ClusterIP
+    --wait
+    --timeout 300s
   environment:
     KUBECONFIG: "{{ k3s_kubeconfig_path }}"
   changed_when: true
 
-- name: Wait for ArgoCD deployments to be ready
+- name: Wait for ArgoCD server to be ready
   ansible.builtin.command: >
-    kubectl rollout status deployment {{ item }} -n {{ argocd_namespace }} --timeout=300s
+    kubectl rollout status deployment argocd-server -n {{ argocd_namespace }} --timeout=300s
   environment:
     KUBECONFIG: "{{ k3s_kubeconfig_path }}"
-  loop:
-    - argocd-server
-    - argocd-repo-server
-    - argocd-applicationset-controller
-    - argocd-redis
-    - argocd-notifications-controller
-    - argocd-dex-server
   changed_when: false
 
 - name: Template root app-of-apps manifest
