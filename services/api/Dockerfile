@@ -10,8 +10,8 @@ COPY --from=builder /install /usr/local
 COPY app.py /app/app.py
 WORKDIR /app
 
-RUN adduser --disabled-password --no-create-home appuser
-USER appuser
+RUN adduser --disabled-password --no-create-home --uid 1000 appuser
+USER 1000
 
 EXPOSE 8000
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
