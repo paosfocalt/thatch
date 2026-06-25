@@ -1,0 +1,7 @@
+image:
+  repository: ghcr.io/paosfocalt/thatch-api
+  tag: latest
+  imagePullPolicy: Always
+
+securityContext:
+  runAsNonRoot: true
