@@ -18,7 +18,7 @@ spec:
     - group: apps
       kind: Deployment
       jsonPointers:
-        - /status
+        - /status/terminatingReplicas
   syncPolicy:
     automated:
       prune: true
