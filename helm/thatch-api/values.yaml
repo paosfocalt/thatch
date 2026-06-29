@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/paosfocalt/thatch-api
-  tag: latest
+  tag: d6caee6
   imagePullPolicy: Always
 
 securityContext:
