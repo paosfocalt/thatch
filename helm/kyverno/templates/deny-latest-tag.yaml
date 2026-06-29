@@ -13,4 +13,4 @@ spec:
         resources: [pods]
   validations:
     - message: Tag cannot be latest, please deploy a successfully built image.
-      expression: "object.spec.containers.all(c, !c.image.endsWith(':latest')"
+      expression: "object.spec.containers.all(c, !c.image.endsWith(':latest'))"
