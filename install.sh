@@ -72,7 +72,8 @@ helm upgrade --install argocd argo/argo-cd \
     --namespace "$ARGOCD_NAMESPACE" \
     --create-namespace \
     --version "$ARGOCD_CHART_VERSION" \
-    --set server.service.type=ClusterIP \
+    --set server.service.type=NodePort \
+    --set server.service.nodePortHttps=30443 \
     --wait \
     --timeout 300s
 
@@ -105,5 +106,5 @@ EOF
 
 echo "=== Done ==="
 echo "ArgoCD is running. Access the UI:"
-echo "  kubectl port-forward svc/argocd-server -n argocd 8080:443"
+echo "  https://<node-ip>:30443"
 echo "  Default admin password: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d"
