@@ -1,8 +1,0 @@
----
-- name: Bootstrap k3s cluster with ArgoCD
-  hosts: all
-  become: true
-  roles:
-    - prerequisites
-    - k3s
-    - argocd

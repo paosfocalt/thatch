@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/paosfocalt/thatch.git
     targetRevision: main
-    path: helm/api
+    path: helm/thatch-api
     helm:
       releaseName: thatch-api
   destination:
