@@ -21,6 +21,8 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: 8000
+        securityContext:
+          runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
 
         env:
         - name: GEMINI_API_KEY
