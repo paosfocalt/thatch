@@ -1,0 +1,7 @@
+image:
+  repository: ghcr.io/paosfocalt/thatchbot
+  tag: latest
+  imagePullPolicy: Always
+
+securityContext:
+  runAsNonRoot: true

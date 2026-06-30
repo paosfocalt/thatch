@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: thatchbot
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/paosfocalt/thatch.git
+    targetRevision: main
+    path: helm/thatchbot
+    helm:
+      releaseName: thatchbot
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: thatchbot
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .status
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+
+
+
