@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/paosfocalt/thatchbot
-  tag: 9c2e124
+  tag: 3557ef2
   imagePullPolicy: Always
 
 securityContext:
